@@ -1,1 +1,1 @@
-Adote é um sistema para adoção de pets.
+Adote é um sistema para adoção de pets
