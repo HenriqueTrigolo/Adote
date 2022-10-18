@@ -198,7 +198,7 @@ module.exports = class PetController{
         res.status(200).json({message: "Pet atualizado com sucesso!"})
     }
 
-    static async schedule(req, res){
+    static async scheduleAdoption(req, res){
         const id = req.params.id
 
         //check if pet exist
@@ -222,7 +222,10 @@ module.exports = class PetController{
         if(pet.adopter){
             if(pet.adopter._id.equals(user._id)){
                 res.status(422).json({message:'Voce já agendou uma visita para este Pet.'})
+            }else{
+                res.status(422).json({message:'Este Pet já está em fase de adoção.'})
             }
+            
             return
         }
 
@@ -236,7 +239,33 @@ module.exports = class PetController{
         await Pet.findByIdAndUpdate(id, pet)
 
         res.status(200).json({message:`Visita agendada com sucesso! Entre em contato com ${pet.user.name} pelo telefone ${pet.user.phone}`})
+    }
 
+    static async concludeAdoption(req, res){
+        const id = req.params.id
+
+        //check if pet exist
+        const pet = await Pet.findOne({_id: id})
+
+        if(!pet){
+            res.status(404).json({message:'Pet não encontrado'})
+            return
+        }
+
+        //check if lodded user registered the pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if(pet.user._id.toString() !== user._id.toString()){
+            res.status(422).json({message:'Ocorreu um erro, tente novamente mais tarde!'})
+            return
+        }
+
+        pet.available = false
+
+        await Pet.findByIdAndUpdate(id, pet)
+
+        res.status(200).json({message:'Parabéns, o ciclo de adoção foi finalizado'})
     }
 
 }
