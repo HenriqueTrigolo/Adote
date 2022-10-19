@@ -1,17 +1,25 @@
+import {useState} from 'react'
+
 import Input from '../../form/Input'
 import styles from '../../form/Form.module.css'
 
 import {Link} from 'react-router-dom'
 
 function Register(){
-    function handleChange(e){
+    const [user, setUser] = useState({})
 
+    function handleChange(e){
+        setUser({...user, [e.target.name]: e.target.value})
+    }
+
+    function handleSubmit(e){
+        e.preventDefault()
     }
 
     return(
         <section className={styles.form_container}>
             <h1>Register</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Input type="text" text="Nome" name="name" placeholder="Digite o seu nome" handleOnChange={handleChange}/>
                 <Input type="text" text="Telefone" name="phone" placeholder="Digite o seu telefone" handleOnChange={handleChange}/>
                 <Input type="email" text="E-mail" name="email" placeholder="Digite o seu e-mail" handleOnChange={handleChange}/>
