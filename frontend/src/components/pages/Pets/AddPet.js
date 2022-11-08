@@ -8,6 +8,8 @@ import {useHostory} from 'react-router-dom'
 
 import useFlashMessage from '../../../hooks/useFlashMessage'
 
+import PetForm from '../../form/PetForm'
+
 function AddPet(){
     return(
         <section className={stylus.addpet_header}>
@@ -15,7 +17,8 @@ function AddPet(){
                 <h1>Cadastre um Pet</h1>
                 <p>Depois ele ficara disponível para adoção</p>
             </div>
-            <p>Formulario</p>
+            <PetForm btnText="Cadastrar Pet"/>
+
         </section>
     )
 }
